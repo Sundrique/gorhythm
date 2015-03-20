@@ -10,10 +10,10 @@ var _ = Suite(&ListSuite{})
 
 func (s *ListSuite) TestElementConstructor(c *C) {
 
-	element := NewNode(1)
+	item := NewItem(1)
 
-	c.Check(element.Value(), Equals, 1)
-	c.Check(element.Next(), IsNil)
+	c.Check(item.Value(), Equals, 1)
+	c.Check(item.Next(), IsNil)
 }
 
 func (s *ListSuite) TestPrepend(c *C) {

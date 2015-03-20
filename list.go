@@ -1,55 +1,55 @@
 package gorhythm
 
-func NewNode(value interface{}) *Node {
-	return &Node{value: value}
+func NewItem(value interface{}) *Item {
+	return &Item{value: value}
 }
 
-type Node struct {
+type Item struct {
 	value interface{}
-	prev  *Node
-	next  *Node
+	prev  *Item
+	next  *Item
 }
 
-func (n *Node) Prev() *Node {
+func (n *Item) Prev() *Item {
 	return n.prev
 }
 
-func (n *Node) Next() *Node {
+func (n *Item) Next() *Item {
 	return n.next
 }
 
-func (n *Node) Value() interface{} {
+func (n *Item) Value() interface{} {
 	return n.value
 }
 
 type LinkedList struct {
-	first *Node
+	first *Item
 }
 
-func (l *LinkedList) Prepend(value interface{}) *Node {
+func (l *LinkedList) Prepend(value interface{}) *Item {
 	first := l.first
-	l.first = &Node{value, nil, first}
+	l.first = &Item{value, nil, first}
 	return l.first
 }
 
-func (l *LinkedList) Append(value interface{}) *Node {
-	node := NewNode(value)
+func (l *LinkedList) Append(value interface{}) *Item {
+	item := NewItem(value)
 	last := l.Last()
 
 	if last != nil {
-		l.Last().next = node
+		l.Last().next = item
 	} else {
-		l.first = node
+		l.first = item
 	}
 
-	return node
+	return item
 }
 
-func (l *LinkedList) First() *Node {
+func (l *LinkedList) First() *Item {
 	return l.first
 }
 
-func (l *LinkedList) Last() *Node {
+func (l *LinkedList) Last() *Item {
 	last := l.first
 
 	if last != nil {
@@ -61,9 +61,9 @@ func (l *LinkedList) Last() *Node {
 	return last
 }
 
-func (l *LinkedList) InsertAfter(value interface{}, node *Node) *Node {
-	new := NewNode(value)
-	new.next = node.next
-	node.next = new
+func (l *LinkedList) InsertAfter(value interface{}, item *Item) *Item {
+	new := NewItem(value)
+	new.next = item.next
+	item.next = new
 	return new
 }
