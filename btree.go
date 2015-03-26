@@ -4,10 +4,6 @@ type Comparable interface {
 	Greater(value interface{}) bool
 }
 
-func NewNode(value interface{}) *Node {
-	return &Node{Value: value, initialized: true}
-}
-
 type Node struct {
 	Value       interface{}
 	left        *Node

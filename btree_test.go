@@ -8,17 +8,6 @@ type BTreeSuite struct{}
 
 var _ = Suite(&BTreeSuite{})
 
-func (s *BTreeSuite) TestNodeConstructor(c *C) {
-
-	var node Node
-
-	node.Insert(1)
-
-	c.Check(node.Value, Equals, 1)
-	c.Check(node.Right(), IsNil)
-	c.Check(node.Left(), IsNil)
-}
-
 func (s *BTreeSuite) TestInsert(c *C) {
 	var tree Node
 
