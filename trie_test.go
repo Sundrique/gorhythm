@@ -11,17 +11,17 @@ var _ = Suite(&TrieSuite{})
 func (s *TrieSuite) TestInsert(c *C) {
 	var trie Trie
 
-	trie.Insert("ab")
+	trie.Insert("ab", 1)
 
-	trie.Insert("ac")
+	trie.Insert("ac", 2)
 
-	trie.Insert("de")
+	trie.Insert("de", 3)
 
 	c.Assert(len(trie.Children), Equals, 2)
-	c.Check(string(trie.Children[0].Value), Equals, "a")
-	c.Check(string(trie.Children[1].Value), Equals, "d")
+	c.Assert(len(trie.Children[0].Children), Equals, 2)
+	c.Check(trie.Children[0].Children[0].Value.(int), Equals, 1)
+	c.Check(trie.Children[0].Children[1].Value.(int), Equals, 2)
 
 	c.Assert(len(trie.Children[0].Children), Equals, 2)
-	c.Check(string(trie.Children[0].Children[0].Value), Equals, "b")
-	c.Check(string(trie.Children[0].Children[1].Value), Equals, "c")
+	c.Check(trie.Children[1].Children[0].Value.(int), Equals, 3)
 }

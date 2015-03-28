@@ -1,18 +1,19 @@
 package gorhythm
 
 type Trie struct {
-	Value    rune
+	Key      rune
+	Value    interface{}
 	Children []*Trie
 }
 
-func (t *Trie) Insert(s string) {
+func (t *Trie) Insert(key string, value interface{}) {
 	node := t
 
 	i := 0
-	n := len(s)
+	n := len(key)
 
 	for i < n {
-		child := node.getChild([]rune(s)[i])
+		child := node.getChild([]rune(key)[i])
 		if child != nil {
 			node = child
 			i++
@@ -22,7 +23,7 @@ func (t *Trie) Insert(s string) {
 	}
 
 	for i < n {
-		newNode := &Trie{Value: []rune(s)[i]}
+		newNode := &Trie{Key: []rune(key)[i], Value: value}
 		node.Children = append(node.Children, newNode)
 		node = newNode
 		i++
@@ -31,7 +32,7 @@ func (t *Trie) Insert(s string) {
 
 func (t *Trie) getChild(r rune) *Trie {
 	for _, child := range t.Children {
-		if child.Value == r {
+		if child.Key == r {
 			return child
 		}
 	}
