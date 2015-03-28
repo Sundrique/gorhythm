@@ -5,10 +5,9 @@ type Comparable interface {
 }
 
 type Node struct {
-	Value       interface{}
-	left        *Node
-	right       *Node
-	initialized bool
+	Value interface{}
+	left  *Node
+	right *Node
 }
 
 func (n *Node) Left() *Node {
@@ -40,15 +39,6 @@ func (n *Node) Insert(value interface{}) *Node {
 	}
 
 	return newNode
-}
-
-func (n *Node) IsNil() bool {
-	return !n.initialized
-}
-
-func (n *Node) init(value interface{}) {
-	n.Value = value
-	n.initialized = true
 }
 
 func (n *Node) Greater(value interface{}) bool {
