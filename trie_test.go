@@ -17,11 +17,11 @@ func (s *TrieSuite) TestInsert(c *C) {
 
 	trie.Insert("de", 3)
 
-	c.Assert(len(trie.Children), Equals, 2)
-	c.Assert(len(trie.Children[0].Children), Equals, 2)
-	c.Check(trie.Children[0].Children[0].Value.(int), Equals, 1)
-	c.Check(trie.Children[0].Children[1].Value.(int), Equals, 2)
+	c.Assert(len(trie.children), Equals, 2)
+	c.Assert(len(trie.children[0].children), Equals, 2)
+	c.Assert(len(trie.children[1].children), Equals, 1)
 
-	c.Assert(len(trie.Children[0].Children), Equals, 2)
-	c.Check(trie.Children[1].Children[0].Value.(int), Equals, 3)
+	c.Check(trie.children[0].children[0].Value.(int), Equals, 1)
+	c.Check(trie.children[0].children[1].Value.(int), Equals, 2)
+	c.Check(trie.children[1].children[0].Value.(int), Equals, 3)
 }

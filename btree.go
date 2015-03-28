@@ -26,7 +26,7 @@ func (n *Node) Insert(value interface{}) *Node {
 			n.Value = value
 			newNode = n
 		} else {
-			if n.Greater(value) {
+			if n.greater(value) {
 				n.left = n.left.Insert(value)
 				newNode = n.left
 			} else {
@@ -41,7 +41,7 @@ func (n *Node) Insert(value interface{}) *Node {
 	return newNode
 }
 
-func (n *Node) Greater(value interface{}) bool {
+func (n *Node) greater(value interface{}) bool {
 	switch n.Value.(type) {
 	default:
 		return false
