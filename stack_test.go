@@ -8,7 +8,7 @@ type StackSuite struct{}
 
 var _ = Suite(&StackSuite{})
 
-func (s *StackSuite) TestPushPop(c *C) {
+func (s *StackSuite) TestStack(c *C) {
 	var stack Stack
 
 	c.Check(stack.Pop(), IsNil)
