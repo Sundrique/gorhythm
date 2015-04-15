@@ -15,7 +15,7 @@ func (h *Heap) Pop() int {
 		h.data = h.data[:len(h.data)-1]
 		pos := 0
 		for pos < len(h.data)/2 &&
-			(( /*h.left(pos) < len(h.data) && */ h.data[pos] > h.data[h.left(pos)]) ||
+			((h.data[pos] > h.data[h.left(pos)]) ||
 				(h.right(pos) < len(h.data) && h.data[pos] > h.data[h.right(pos)])) {
 
 			var newPos int
@@ -25,8 +25,7 @@ func (h *Heap) Pop() int {
 				newPos = h.right(pos)
 			}
 
-			h.data[pos], h.data[newPos] = h.data[newPos], h.data[pos]
-			pos = h.left(pos)
+			h.data[pos], h.data[newPos], pos = h.data[newPos], h.data[pos], newPos
 		}
 		return first
 	}
