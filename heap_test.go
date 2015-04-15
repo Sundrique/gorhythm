@@ -13,13 +13,13 @@ func (s *HashTableSuite) TestHeap(c *C) {
 
 	heap.Push(9)
 	heap.Push(2)
-	heap.Push(1)
+	heap.Push(6)
 	heap.Push(7)
 	heap.Push(4)
 	heap.Push(3)
 	heap.Push(5)
-	heap.Push(6)
 	heap.Push(8)
+	heap.Push(1)
 
 	c.Check(heap.Pop(), Equals, 1)
 	c.Check(heap.Pop(), Equals, 2)

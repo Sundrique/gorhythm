@@ -30,6 +30,7 @@ func (h *Heap) Push(node int) {
 		pos := len(h.data) - 1
 		for pos > 0 && h.data[pos] < h.data[h.parent(pos)] {
 			h.swap(pos, h.parent(pos))
+			pos = h.parent(pos)
 		}
 	}
 }
