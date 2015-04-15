@@ -14,18 +14,10 @@ func (h *Heap) Pop() int {
 		h.data[0] = h.data[len(h.data)-1]
 		h.data = h.data[:len(h.data)-1]
 		pos := 0
-		for pos < len(h.data)/2 &&
-			((h.data[pos] > h.data[h.left(pos)]) ||
-				(h.right(pos) < len(h.data) && h.data[pos] > h.data[h.right(pos)])) {
-
-			var newPos int
-			if h.right(pos) >= len(h.data) || h.data[h.left(pos)] < h.data[h.right(pos)] {
-				newPos = h.left(pos)
-			} else {
-				newPos = h.right(pos)
-			}
-
-			h.data[pos], h.data[newPos], pos = h.data[newPos], h.data[pos], newPos
+		for !h.isLeaf(pos) && h.disordered(pos) {
+			child := h.minChildPos(pos)
+			h.swap(pos, child)
+			pos = child
 		}
 		return first
 	}
@@ -37,23 +29,39 @@ func (h *Heap) Push(node int) {
 	if len(h.data) > 1 {
 		pos := len(h.data) - 1
 		for pos > 0 && h.data[pos] < h.data[h.parent(pos)] {
-			h.data[pos], h.data[h.parent(pos)] = h.data[h.parent(pos)], h.data[pos]
+			h.swap(pos, h.parent(pos))
 		}
 	}
 }
 
-func (s *Heap) parent(index int) int {
-	return (index - 1) / 2
+func (s *Heap) parent(pos int) int {
+	return (pos - 1) / 2
 }
 
-func (h *Heap) left(index int) int {
-	return index*2 + 1
+func (h *Heap) left(pos int) int {
+	return pos*2 + 1
 }
 
-func (h *Heap) right(index int) int {
-	return index*2 + 2
+func (h *Heap) right(pos int) int {
+	return pos*2 + 2
 }
 
-func (h *Heap) size() int {
-	return len(h.data) - 1
+func (h *Heap) isLeaf(pos int) bool {
+	return pos >= len(h.data)/2
+}
+
+func (h *Heap) disordered(pos int) bool {
+	return h.data[pos] > h.data[h.left(pos)] || (h.right(pos) < len(h.data) && h.data[pos] > h.data[h.right(pos)])
+}
+
+func (h *Heap) minChildPos(pos int) int {
+	if h.right(pos) >= len(h.data) || h.data[h.left(pos)] < h.data[h.right(pos)] {
+		return h.left(pos)
+	} else {
+		return h.right(pos)
+	}
+}
+
+func (h *Heap) swap(src int, dst int) {
+	h.data[src], h.data[dst] = h.data[dst], h.data[src]
 }
