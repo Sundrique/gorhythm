@@ -28,7 +28,7 @@ func (h *Heap) Push(node int) {
 	h.data = append(h.data, node)
 	if len(h.data) > 1 {
 		pos := len(h.data) - 1
-		for pos > 0 && h.data[pos] < h.data[h.parent(pos)] {
+		for pos > 0 && h.disordered(h.parent(pos)) {
 			h.swap(pos, h.parent(pos))
 			pos = h.parent(pos)
 		}
@@ -52,7 +52,7 @@ func (h *Heap) isLeaf(pos int) bool {
 }
 
 func (h *Heap) disordered(pos int) bool {
-	return h.data[pos] > h.data[h.left(pos)] || (h.right(pos) < len(h.data) && h.data[pos] > h.data[h.right(pos)])
+	return (h.left(pos) < len(h.data) && h.data[pos] > h.data[h.left(pos)]) || (h.right(pos) < len(h.data) && h.data[pos] > h.data[h.right(pos)])
 }
 
 func (h *Heap) minChildPos(pos int) int {
