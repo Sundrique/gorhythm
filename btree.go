@@ -1,9 +1,5 @@
 package gorhythm
 
-type Comparable interface {
-	Greater(value interface{}) bool
-}
-
 type Node struct {
 	Value interface{}
 	left  *Node
@@ -46,7 +42,7 @@ func (n *Node) greater(value interface{}) bool {
 	default:
 		return false
 	case Comparable:
-		return n.Value.(Comparable).Greater(value)
+		return n.Value.(Comparable).Compare(value) > 0
 	case int:
 		return n.Value.(int) > value.(int)
 	case int8:
