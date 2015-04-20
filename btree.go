@@ -15,7 +15,16 @@ func (n *Node) Right() *Node {
 	return n.right
 }
 
-func (n *Node) Insert(value interface{}) *Node {
+func (n *Node) Insert(values ...interface{}) *Node {
+	var newNode *Node
+	for _, value := range values {
+		newNode = n.insertSingle(value)
+	}
+
+	return newNode
+}
+
+func (n *Node) insertSingle(value interface{}) *Node {
 	var newNode *Node
 
 	if n != nil {

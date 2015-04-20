@@ -4,9 +4,8 @@ type Stack struct {
 	data []interface{}
 }
 
-func (s *Stack) Push(e interface{}) *Stack {
-	s.data = append(s.data, e)
-	return s
+func (s *Stack) Push(e ...interface{}) {
+	s.data = append(s.data, e...)
 }
 
 func (s *Stack) Pop() interface{} {

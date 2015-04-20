@@ -14,7 +14,13 @@ type HashTable struct {
 	data [][]TableRecord
 }
 
-func (h *HashTable) Insert(item TableRecord) {
+func (h *HashTable) Insert(items ...TableRecord) {
+	for _, item := range items {
+		h.insertSingle(item)
+	}
+}
+
+func (h *HashTable) insertSingle(item TableRecord) {
 	key := h.calculateHash(item.Key())
 
 	neededLen := key + 1

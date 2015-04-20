@@ -28,5 +28,30 @@ func (s *HashTableSuite) TestHashTable(c *C) {
 	c.Check(int(t.Get("2").(KeyedInt)), Equals, 2)
 	c.Check(int(t.Get("3").(KeyedInt)), Equals, 3)
 	c.Check(t.Get("4"), IsNil)
+}
 
+func (s *HashTableSuite) TestInsertMultiple(c *C) {
+	var t HashTable
+
+	c.Assert(t.Get("1"), IsNil)
+
+	t.Insert(KeyedInt(1), KeyedInt(2), KeyedInt(3))
+
+	c.Check(int(t.Get("1").(KeyedInt)), Equals, 1)
+	c.Check(int(t.Get("2").(KeyedInt)), Equals, 2)
+	c.Check(int(t.Get("3").(KeyedInt)), Equals, 3)
+	c.Check(t.Get("4"), IsNil)
+}
+
+func (s *HashTableSuite) TestInsertSlice(c *C) {
+	var t HashTable
+
+	c.Assert(t.Get("1"), IsNil)
+
+	t.Insert([]TableRecord{KeyedInt(1), KeyedInt(2), KeyedInt(3)}...)
+
+	c.Check(int(t.Get("1").(KeyedInt)), Equals, 1)
+	c.Check(int(t.Get("2").(KeyedInt)), Equals, 2)
+	c.Check(int(t.Get("3").(KeyedInt)), Equals, 3)
+	c.Check(t.Get("4"), IsNil)
 }

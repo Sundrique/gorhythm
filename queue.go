@@ -4,8 +4,8 @@ type Queue struct {
 	data []interface{}
 }
 
-func (q *Queue) Enqueue(e interface{}) {
-	q.data = append(q.data, e)
+func (q *Queue) Enqueue(e ...interface{}) {
+	q.data = append(q.data, e...)
 }
 
 func (q *Queue) Dequeue() interface{} {

@@ -21,7 +21,13 @@ func (h *Heap) Pop() interface{} {
 	return 0
 }
 
-func (h *Heap) Push(node interface{}) {
+func (h *Heap) Push(nodes ...interface{}) {
+	for _, node := range nodes {
+		h.pushSingle(node)
+	}
+}
+
+func (h *Heap) pushSingle(node interface{}) {
 	h.data = append(h.data, node)
 	if len(h.data) > 1 {
 		pos := len(h.data) - 1
