@@ -17,7 +17,7 @@ func (s *ListSuite) TestElementConstructor(c *C) {
 }
 
 func (s *ListSuite) TestPrepend(c *C) {
-	list := LinkedList{}
+	list := DoubleLinkedList{}
 
 	first := list.Prepend(1)
 
@@ -31,25 +31,35 @@ func (s *ListSuite) TestPrepend(c *C) {
 }
 
 func (s *ListSuite) TestAppend(c *C) {
-	list := LinkedList{}
+	list := DoubleLinkedList{}
 
-	list.Append(1)
+	first := list.Prepend(1)
 
-	c.Check(list.Last().Value(), Equals, 1)
-	c.Check(list.Last().Next(), IsNil)
+	c.Check(list.First().Value(), Equals, 1)
+	c.Check(list.First().Next(), IsNil)
 
-	list.Append(2)
+	list.Prepend(2)
+	list.Append(3)
 
-	c.Check(list.Last().Value(), Equals, 2)
-	c.Check(list.Last().Next(), IsNil)
+	c.Assert(first.Next(), NotNil)
+	c.Check(first.Next().Value(), Equals, 3)
+	c.Assert(first.Prev(), NotNil)
+	c.Check(first.Prev().Value(), Equals, 2)
 }
 
 func (s *ListSuite) TestInsertAfter(c *C) {
-	list := LinkedList{}
+	list := DoubleLinkedList{}
 
-	list.Append(1)
-	new := list.InsertAfter(2, list.First())
+	first := list.Append(1)
+	second := list.InsertAfter(2, list.First())
 
-	c.Check(list.First().Next(), DeepEquals, new)
+	c.Check(list.First().Next(), DeepEquals, second)
+	c.Check(list.Last().Prev(), DeepEquals, first)
 	c.Check(list.Last().Value(), Equals, 2)
+
+	third := list.InsertAfter(3, list.First())
+
+	c.Check(list.Last().Prev(), DeepEquals, third)
+	c.Check(third.Prev(), DeepEquals, first)
+	c.Check(third.Next(), DeepEquals, second)
 }

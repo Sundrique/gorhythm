@@ -22,34 +22,39 @@ func (n *Item) Value() interface{} {
 	return n.value
 }
 
-type LinkedList struct {
+type DoubleLinkedList struct {
 	first *Item
 }
 
-func (l *LinkedList) Prepend(value interface{}) *Item {
+func (l *DoubleLinkedList) Prepend(value interface{}) *Item {
 	first := l.first
-	l.first = &Item{value, nil, first}
+	new := &Item{value, nil, first}
+	if first != nil {
+		first.prev = new
+	}
+	l.first = new
 	return l.first
 }
 
-func (l *LinkedList) Append(value interface{}) *Item {
-	item := NewItem(value)
+func (l *DoubleLinkedList) Append(value interface{}) *Item {
+	new := NewItem(value)
 	last := l.Last()
 
 	if last != nil {
-		l.Last().next = item
+		new.prev = l.Last()
+		l.Last().next = new
 	} else {
-		l.first = item
+		l.first = new
 	}
 
-	return item
+	return new
 }
 
-func (l *LinkedList) First() *Item {
+func (l *DoubleLinkedList) First() *Item {
 	return l.first
 }
 
-func (l *LinkedList) Last() *Item {
+func (l *DoubleLinkedList) Last() *Item {
 	last := l.first
 
 	if last != nil {
@@ -61,9 +66,13 @@ func (l *LinkedList) Last() *Item {
 	return last
 }
 
-func (l *LinkedList) InsertAfter(value interface{}, item *Item) *Item {
+func (l *DoubleLinkedList) InsertAfter(value interface{}, item *Item) *Item {
 	new := NewItem(value)
 	new.next = item.next
+	new.prev = item
 	item.next = new
+	if new.next != nil {
+		new.next.prev = new
+	}
 	return new
 }
