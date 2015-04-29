@@ -8,14 +8,6 @@ type ListSuite struct{}
 
 var _ = Suite(&ListSuite{})
 
-func (s *ListSuite) TestElementConstructor(c *C) {
-
-	item := NewItem(1)
-
-	c.Check(item.Value(), Equals, 1)
-	c.Check(item.Next(), IsNil)
-}
-
 func (s *ListSuite) TestPrepend(c *C) {
 	list := DoubleLinkedList{}
 
@@ -54,12 +46,27 @@ func (s *ListSuite) TestInsertAfter(c *C) {
 	second := list.InsertAfter(2, list.First())
 
 	c.Check(list.First().Next(), DeepEquals, second)
-	c.Check(list.Last().Prev(), DeepEquals, first)
-	c.Check(list.Last().Value(), Equals, 2)
+	c.Check(second.Prev(), DeepEquals, first)
+	c.Check(second.Value(), Equals, 2)
 
 	third := list.InsertAfter(3, list.First())
 
-	c.Check(list.Last().Prev(), DeepEquals, third)
+	c.Check(second.Prev(), DeepEquals, third)
 	c.Check(third.Prev(), DeepEquals, first)
 	c.Check(third.Next(), DeepEquals, second)
+}
+
+func (s *ListSuite) TestCircularLinkedList(c *C) {
+	list := CircularLinkedList{}
+
+	list.Append(1)
+
+	c.Check(list.First().Next(), DeepEquals, list.First())
+	c.Check(list.First().Prev(), DeepEquals, list.First())
+
+	list.Prepend(2)
+
+	c.Check(list.First().Value(), Equals, 2)
+	c.Check(list.First().Prev().Value(), Equals, 1)
+	c.Check(list.First().Next().Value(), Equals, 1)
 }

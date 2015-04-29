@@ -1,13 +1,16 @@
 package gorhythm
 
-func NewItem(value interface{}) *Item {
-	return &Item{value: value}
-}
-
 type Item struct {
 	value interface{}
 	prev  *Item
 	next  *Item
+}
+
+type LinkedList interface {
+	First() *Item
+	Prepend(value interface{}) *Item
+	Append(value interface{}) *Item
+	InsertAfter(value interface{}, item *Item) *Item
 }
 
 func (n *Item) Prev() *Item {
@@ -27,24 +30,29 @@ type DoubleLinkedList struct {
 }
 
 func (l *DoubleLinkedList) Prepend(value interface{}) *Item {
-	first := l.first
-	new := &Item{value, nil, first}
-	if first != nil {
-		first.prev = new
+	new := &Item{value: value}
+
+	if l.first != nil {
+		new.prev = l.first.prev
+		l.first.prev = new
+		new.next = l.first
 	}
 	l.first = new
-	return l.first
+
+	return new
 }
 
 func (l *DoubleLinkedList) Append(value interface{}) *Item {
-	new := NewItem(value)
-	last := l.Last()
+	return appendItem(l, value)
+}
 
-	if last != nil {
-		new.prev = l.Last()
-		l.Last().next = new
-	} else {
-		l.first = new
+func (l *DoubleLinkedList) InsertAfter(value interface{}, item *Item) *Item {
+	new := &Item{value: value}
+	new.next = item.next
+	new.prev = item
+	item.next = new
+	if new.next != nil {
+		new.next.prev = new
 	}
 
 	return new
@@ -54,7 +62,7 @@ func (l *DoubleLinkedList) First() *Item {
 	return l.first
 }
 
-func (l *DoubleLinkedList) Last() *Item {
+func (l *DoubleLinkedList) last() *Item {
 	last := l.first
 
 	if last != nil {
@@ -66,13 +74,44 @@ func (l *DoubleLinkedList) Last() *Item {
 	return last
 }
 
-func (l *DoubleLinkedList) InsertAfter(value interface{}, item *Item) *Item {
-	new := NewItem(value)
-	new.next = item.next
-	new.prev = item
-	item.next = new
-	if new.next != nil {
-		new.next.prev = new
+type CircularLinkedList struct {
+	DoubleLinkedList
+}
+
+func (l *CircularLinkedList) Prepend(value interface{}) *Item {
+	new := l.DoubleLinkedList.Prepend(value)
+
+	if new.next == nil {
+		new.next = new
+		new.prev = new
 	}
+
 	return new
+}
+
+func (l *CircularLinkedList) Append(value interface{}) *Item {
+	return appendItem(l, value)
+}
+
+func appendItem(l LinkedList, value interface{}) *Item {
+	var new *Item
+	if l.First() == nil {
+		new = l.Prepend(value)
+	} else {
+		new = l.InsertAfter(value, lastItem(l))
+	}
+
+	return new
+}
+
+func lastItem(l LinkedList) *Item {
+	last := l.First()
+
+	if last != nil {
+		for last.Next() != nil {
+			last = last.Next()
+		}
+	}
+
+	return last
 }
