@@ -1,5 +1,7 @@
 package gorhythm
 
+type Node1 map[string]Node
+
 type Node struct {
 	Comparator
 	Value interface{}
@@ -49,4 +51,12 @@ func (n *Node) insertSingle(value interface{}) *Node {
 
 func (n *Node) greater(value interface{}) bool {
 	return n.Greater(n.Value, value)
+}
+
+type AVLNode struct {
+	Node
+}
+
+func (n *AVLNode) Insert(values ...interface{}) *Node {
+	return n.Node.Insert(values)
 }

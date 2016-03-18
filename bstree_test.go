@@ -51,3 +51,15 @@ func (s *BTreeSuite) TestInsertSlice(c *C) {
 	c.Assert(tree.Right(), Not(IsNil))
 	c.Check(tree.Right().Value, Equals, 4)
 }
+
+func (s *BTreeSuite) TestInsertSliceAVL(c *C) {
+	var tree AVLNode
+
+	tree.Insert([]interface{}{3, 2, 4}...)
+
+	c.Check(tree.Value, Equals, 3)
+	c.Assert(tree.Left(), Not(IsNil))
+	c.Check(tree.Left().Value, Equals, 2)
+	c.Assert(tree.Right(), Not(IsNil))
+	c.Check(tree.Right().Value, Equals, 4)
+}
